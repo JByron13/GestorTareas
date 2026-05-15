@@ -3,22 +3,24 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const todoRoutes = require("./routes/todoRoutes");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Conexión MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB conectado"))
-  .catch(err => console.log(err));
+// 👇 ESTA LÍNEA ES CLAVE
+app.use("/api/todos", todoRoutes);
 
-// Ruta de prueba
 app.get("/", (req, res) => {
   res.send("API funcionando 🚀");
 });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log("Servidor en puerto " + PORT);
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB conectado"))
+  .catch(err => console.log(err));
+
+app.listen(5000, () => {
+  console.log("Servidor en puerto 5000");
 });
