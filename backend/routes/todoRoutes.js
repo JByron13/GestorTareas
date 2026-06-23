@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Todo = require("../models/Todo");
+const auth = require("../middleware/auth");
 
 // 🔵 GET - obtener tareas
-router.get("/", async (req, res) => {
+router.get("/", auth, async(req,res)=>{
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find({
+ user:req.user
+});
     res.json(todos);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -15,9 +18,13 @@ router.get("/", async (req, res) => {
 // 🟢 POST - crear tarea
 router.post("/", async (req, res) => {
   try {
-    const newTodo = new Todo({
-      text: req.body.text
-    });
+   const newTodo = new Todo({
+
+text:req.body.text,
+
+user:req.user
+
+});
 
     const saved = await newTodo.save();
     res.json(saved);

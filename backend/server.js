@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const authRoutes = require("./routes/authRoutes");
 require("dotenv").config();
 
 const todoRoutes = require("./routes/todoRoutes");
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // 👇 ESTA LÍNEA ES CLAVE
 app.use("/api/todos", todoRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("API funcionando 🚀");
